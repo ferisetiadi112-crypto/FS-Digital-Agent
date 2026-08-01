@@ -1,174 +1,136 @@
 // ===========================================
 // FS DIGITAL AGENT
-// Sprint 2.2B
-// Minimal AI Chat Engine
+// Sprint 3.1 - Gemini Connected
 // ===========================================
+
+const GEMINI_API_KEY = "AQ.GANTI_DENGAN_API_KEY_ANDA";
+
+const GEMINI_URL =
+`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
 const input = document.getElementById("userInput");
 const button = document.getElementById("sendBtn");
 const chat = document.getElementById("chatArea");
 
-// Event
 button.addEventListener("click", sendMessage);
 
-input.addEventListener("keydown", function (e) {
-
-    if (e.key === "Enter") {
-
-        e.preventDefault();
-
+input.addEventListener("keydown", function(e){
+    if(e.key==="Enter"){
         sendMessage();
-
     }
-
 });
 
-// =========================
-// Send Message
-// =========================
+async function sendMessage(){
 
-function sendMessage() {
+    const text=input.value.trim();
 
-    const text = input.value.trim();
+    if(text==="") return;
 
-    if (text === "") return;
+    addMessage(text,"user");
 
-    addMessage(text, "user");
-
-    input.value = "";
-
-    input.focus();
+    input.value="";
 
     showTyping();
 
-    setTimeout(() => {
+    try{
+
+        const reply=await askGemini(text);
 
         removeTyping();
 
-        const reply = aiEngine(text);
+        addMessage(reply,"ai");
 
-        addMessage(reply, "ai");
+    }catch(err){
 
-    }, 700);
+        removeTyping();
 
-}
-
-// =========================
-// Add Bubble
-// =========================
-
-function addMessage(text, sender) {
-
-    const wrapper = document.createElement("div");
-
-    wrapper.classList.add("message");
-
-    wrapper.classList.add(sender);
-
-    const bubble = document.createElement("div");
-
-    bubble.classList.add("bubble");
-
-    bubble.innerHTML = text;
-
-    wrapper.appendChild(bubble);
-
-    chat.appendChild(wrapper);
-
-    chat.scrollTop = chat.scrollHeight;
-
-}
-
-// =========================
-// Typing
-// =========================
-
-function showTyping() {
-
-    const wrapper = document.createElement("div");
-
-    wrapper.className = "message ai";
-
-    wrapper.id = "typing";
-
-    wrapper.innerHTML = `
-
-        <div class="bubble">
-
-            Sedang mengetik...
-
-        </div>
-
-    `;
-
-    chat.appendChild(wrapper);
-
-    chat.scrollTop = chat.scrollHeight;
-
-}
-
-function removeTyping() {
-
-    const typing = document.getElementById("typing");
-
-    if (typing) {
-
-        typing.remove();
+        addMessage(
+            "❌ Tidak dapat terhubung ke Gemini API.<br><br>"+err.message,
+            "ai"
+        );
 
     }
 
 }
 
-// =========================
-// Simple AI Engine
-// =========================
+function addMessage(text,sender){
 
-function aiEngine(message) {
+    const div=document.createElement("div");
 
-    const text = message.toLowerCase();
+    div.className="message "+sender;
 
-    if (text.includes("halo")) {
+    div.innerHTML=text;
 
-        return "Halo Prof Feri 👋";
+    chat.appendChild(div);
+
+    chat.scrollTop=chat.scrollHeight;
+
+}
+
+function showTyping(){
+
+    const div=document.createElement("div");
+
+    div.id="typing";
+
+    div.className="message ai";
+
+    div.innerHTML="Sedang mengetik...";
+
+    chat.appendChild(div);
+
+    chat.scrollTop=chat.scrollHeight;
+
+}
+
+function removeTyping(){
+
+    const typing=document.getElementById("typing");
+
+    if(typing) typing.remove();
+
+}
+
+async function askGemini(prompt){
+
+    const response=await fetch(GEMINI_URL,{
+
+        method:"POST",
+
+        headers:{
+            "Content-Type":"application/json"
+        },
+
+        body:JSON.stringify({
+
+            contents:[
+
+                {
+
+                    parts:[
+
+                        {
+                            text:prompt
+                        }
+
+                    ]
+
+                }
+
+            ]
+
+        })
+
+    });
+
+    if(!response.ok){
+
+        throw new Error("HTTP "+response.status);
 
     }
 
-    if (text.includes("siapa")) {
+    const data=await response.json();
 
-        return "Saya adalah FS DIGITAL AGENT yang sedang dikembangkan untuk membantu seluruh pekerjaan Anda.";
-
-    }
-
-    if (text.includes("simpati")) {
-
-        return "Saya siap membantu pengembangan SIMPATI-WANI mulai dari perencanaan, coding, database, hingga implementasi.";
-
-    }
-
-    if (text.includes("pekerja sosial")) {
-
-        return "Saya siap membantu penyusunan asesmen, laporan, instrumen, penelitian, dan seluruh pekerjaan sebagai Pekerja Sosial.";
-
-    }
-
-    if (text.includes("penelitian")) {
-
-        return "Saya siap membantu penyusunan proposal, tesis, artikel ilmiah, analisis data, dan publikasi.";
-
-    }
-
-    if (text.includes("aplikasi")) {
-
-        return "Saya siap membantu membangun aplikasi berbasis Web, Google Apps Script, Firebase, maupun AI.";
-
-    }
-
-    if (text.includes("terima kasih")) {
-
-        return "Sama-sama Prof 😊";
-
-    }
-
-    return "Perintah diterima. Pada Sprint berikutnya saya akan menggunakan Gemini AI sebagai otak utama sehingga dapat memberikan jawaban yang lebih cerdas.";
+    return data.candidates[0].content.parts[0].text;
 
 }
