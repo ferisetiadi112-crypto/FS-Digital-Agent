@@ -1,20 +1,31 @@
 // ===========================================
 // FS DIGITAL AGENT
-// Sprint 2.1
-// Interactive Chat Engine
+// Sprint 2.2B
+// Minimal AI Chat Engine
 // ===========================================
 
 const input = document.getElementById("userInput");
 const button = document.getElementById("sendBtn");
 const chat = document.getElementById("chatArea");
 
+// Event
 button.addEventListener("click", sendMessage);
 
 input.addEventListener("keydown", function (e) {
+
     if (e.key === "Enter") {
+
+        e.preventDefault();
+
         sendMessage();
+
     }
+
 });
+
+// =========================
+// Send Message
+// =========================
 
 function sendMessage() {
 
@@ -26,6 +37,8 @@ function sendMessage() {
 
     input.value = "";
 
+    input.focus();
+
     showTyping();
 
     setTimeout(() => {
@@ -36,37 +49,27 @@ function sendMessage() {
 
         addMessage(reply, "ai");
 
-    }, 1000);
+    }, 700);
 
 }
+
+// =========================
+// Add Bubble
+// =========================
 
 function addMessage(text, sender) {
 
     const wrapper = document.createElement("div");
 
-    wrapper.className = "message";
+    wrapper.classList.add("message");
+
+    wrapper.classList.add(sender);
 
     const bubble = document.createElement("div");
 
-    bubble.className = "bubble";
+    bubble.classList.add("bubble");
 
-    if (sender === "user") {
-
-        bubble.innerHTML = `
-            <b>👤 Anda</b><br><br>
-            ${text}
-        `;
-
-        bubble.style.background = "#2563eb";
-
-    } else {
-
-        bubble.innerHTML = `
-            <b>🤖 Feris</b><br><br>
-            ${text}
-        `;
-
-    }
+    bubble.innerHTML = text;
 
     wrapper.appendChild(bubble);
 
@@ -76,22 +79,29 @@ function addMessage(text, sender) {
 
 }
 
+// =========================
+// Typing
+// =========================
+
 function showTyping() {
 
-    const typing = document.createElement("div");
+    const wrapper = document.createElement("div");
 
-    typing.id = "typing";
+    wrapper.className = "message ai";
 
-    typing.className = "message";
+    wrapper.id = "typing";
 
-    typing.innerHTML = `
+    wrapper.innerHTML = `
+
         <div class="bubble">
-            🤖 <b>Feris</b><br><br>
+
             Sedang mengetik...
+
         </div>
+
     `;
 
-    chat.appendChild(typing);
+    chat.appendChild(wrapper);
 
     chat.scrollTop = chat.scrollHeight;
 
@@ -101,9 +111,17 @@ function removeTyping() {
 
     const typing = document.getElementById("typing");
 
-    if (typing) typing.remove();
+    if (typing) {
+
+        typing.remove();
+
+    }
 
 }
+
+// =========================
+// Simple AI Engine
+// =========================
 
 function aiEngine(message) {
 
@@ -111,25 +129,37 @@ function aiEngine(message) {
 
     if (text.includes("halo")) {
 
-        return "Halo Prof Feri 👋<br><br>Saya siap membantu pekerjaan Anda hari ini.";
+        return "Halo Prof Feri 👋";
 
     }
 
     if (text.includes("siapa")) {
 
-        return "Saya adalah <b>Feris</b>, FS DIGITAL AGENT versi 0.1.";
+        return "Saya adalah FS DIGITAL AGENT yang sedang dikembangkan untuk membantu seluruh pekerjaan Anda.";
 
     }
 
     if (text.includes("simpati")) {
 
-        return "SIMPATI-WANI adalah proyek utama yang sedang kita kembangkan bersama.";
+        return "Saya siap membantu pengembangan SIMPATI-WANI mulai dari perencanaan, coding, database, hingga implementasi.";
 
     }
 
     if (text.includes("pekerja sosial")) {
 
-        return "Saya siap membantu seluruh pekerjaan sosial Prof mulai dari laporan, asesmen hingga pengembangan aplikasi.";
+        return "Saya siap membantu penyusunan asesmen, laporan, instrumen, penelitian, dan seluruh pekerjaan sebagai Pekerja Sosial.";
+
+    }
+
+    if (text.includes("penelitian")) {
+
+        return "Saya siap membantu penyusunan proposal, tesis, artikel ilmiah, analisis data, dan publikasi.";
+
+    }
+
+    if (text.includes("aplikasi")) {
+
+        return "Saya siap membantu membangun aplikasi berbasis Web, Google Apps Script, Firebase, maupun AI.";
 
     }
 
@@ -139,10 +169,6 @@ function aiEngine(message) {
 
     }
 
-    return `
-        Perintah diterima.<br><br>
-        Saat ini saya masih menggunakan AI lokal.<br><br>
-        Gemini AI akan diaktifkan pada Sprint berikutnya.
-    `;
+    return "Perintah diterima. Pada Sprint berikutnya saya akan menggunakan Gemini AI sebagai otak utama sehingga dapat memberikan jawaban yang lebih cerdas.";
 
 }
