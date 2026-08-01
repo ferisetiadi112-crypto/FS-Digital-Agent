@@ -2,41 +2,38 @@
 <html lang="id">
 
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>FS DIGITAL AGENT</title>
 
-    <meta name="description" content="FS Digital Agent - Personal AI Assistant">
-    <meta name="theme-color" content="#0f172a">
+    <meta name="description" content="FS Digital Agent">
+
+    <meta name="theme-color" content="#111827">
 
     <link rel="stylesheet" href="style.css">
+
 </head>
 
 <body>
 
 <div class="app">
 
+    <!-- HEADER -->
+
     <header class="topbar">
 
-        <div class="logo">
+        <h1>FS DIGITAL AGENT</h1>
 
-            <div class="logo-circle">
-                FS
-            </div>
-
-            <div>
-
-                <h1>FS DIGITAL AGENT</h1>
-
-                <p>Feris • Personal AI Assistant</p>
-
-            </div>
-
-        </div>
+        <span class="status">
+            🟢 Online
+        </span>
 
     </header>
 
+    <!-- CHAT -->
 
     <main id="chatArea">
 
@@ -44,19 +41,11 @@
 
             <div class="bubble">
 
-                <h2>Halo Prof Feri 👋</h2>
+                Halo Prof Feri 👋
 
-                <p>
+                <br><br>
 
-Selamat datang di <b>FS DIGITAL AGENT</b>.
-
-Saya adalah <b>Feris</b>, asisten digital pribadi Anda.
-
-Saya siap membantu pekerjaan sosial, penelitian, SIMPATI-WANI, penulisan, dan pengembangan aplikasi.
-
-Silakan tuliskan perintah pertama Anda.
-
-                </p>
+                Apa yang ingin kita kerjakan hari ini?
 
             </div>
 
@@ -64,18 +53,20 @@ Silakan tuliskan perintah pertama Anda.
 
     </main>
 
+    <!-- INPUT -->
 
     <footer class="chatbox">
 
         <input
             id="userInput"
             type="text"
-            placeholder="Ketik perintah..."
+            placeholder="Ketik pesan..."
+            autocomplete="off"
         >
 
         <button id="sendBtn">
 
-            Kirim
+            ↑
 
         </button>
 
