@@ -1,0 +1,230 @@
+/* ======================================
+   FS DIGITAL AGENT v0.1
+   Author : Feri Setiadi
+   ====================================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    font-family:Arial, Helvetica, sans-serif;
+
+    background:#0f172a;
+
+    color:#ffffff;
+
+}
+
+.app{
+
+    display:flex;
+
+    flex-direction:column;
+
+    height:100vh;
+
+}
+
+/* ==========================
+   HEADER
+========================== */
+
+.topbar{
+
+    background:#111827;
+
+    padding:18px;
+
+    border-bottom:1px solid #1e293b;
+
+}
+
+.logo{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+}
+
+.logo-circle{
+
+    width:55px;
+
+    height:55px;
+
+    border-radius:50%;
+
+    background:#2563eb;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-weight:bold;
+
+    font-size:22px;
+
+    color:white;
+
+}
+
+.logo h1{
+
+    font-size:20px;
+
+}
+
+.logo p{
+
+    color:#94a3b8;
+
+    font-size:14px;
+
+}
+
+/* ==========================
+   CHAT AREA
+========================== */
+
+#chatArea{
+
+    flex:1;
+
+    overflow:auto;
+
+    padding:20px;
+
+}
+
+.message{
+
+    display:flex;
+
+    margin-bottom:20px;
+
+}
+
+.bubble{
+
+    background:#1e293b;
+
+    padding:18px;
+
+    border-radius:16px;
+
+    max-width:100%;
+
+    line-height:1.7;
+
+    box-shadow:0 5px 15px rgba(0,0,0,.20);
+
+}
+
+.bubble h2{
+
+    margin-bottom:12px;
+
+    color:#60a5fa;
+
+}
+
+/* ==========================
+   INPUT
+========================== */
+
+.chatbox{
+
+    display:flex;
+
+    padding:15px;
+
+    background:#111827;
+
+    gap:10px;
+
+}
+
+.chatbox input{
+
+    flex:1;
+
+    border:none;
+
+    border-radius:12px;
+
+    padding:14px;
+
+    font-size:16px;
+
+    outline:none;
+
+}
+
+.chatbox button{
+
+    background:#2563eb;
+
+    color:white;
+
+    border:none;
+
+    border-radius:12px;
+
+    padding:0 22px;
+
+    font-size:16px;
+
+    cursor:pointer;
+
+}
+
+.chatbox button:hover{
+
+    background:#1d4ed8;
+
+}
+
+/* ==========================
+   MOBILE
+========================== */
+
+@media(max-width:768px){
+
+.logo h1{
+
+font-size:18px;
+
+}
+
+.logo-circle{
+
+width:50px;
+
+height:50px;
+
+font-size:20px;
+
+}
+
+.chatbox{
+
+padding:12px;
+
+}
+
+.chatbox input{
+
+font-size:15px;
+
+}
+
+}
