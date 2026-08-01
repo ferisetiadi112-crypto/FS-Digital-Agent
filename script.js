@@ -1,87 +1,148 @@
+// ===========================================
+// FS DIGITAL AGENT
+// Sprint 2.1
+// Interactive Chat Engine
+// ===========================================
+
 const input = document.getElementById("userInput");
 const button = document.getElementById("sendBtn");
 const chat = document.getElementById("chatArea");
 
 button.addEventListener("click", sendMessage);
 
-input.addEventListener("keypress", function(event){
-
-    if(event.key==="Enter"){
-
+input.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {
         sendMessage();
+    }
+});
+
+function sendMessage() {
+
+    const text = input.value.trim();
+
+    if (text === "") return;
+
+    addMessage(text, "user");
+
+    input.value = "";
+
+    showTyping();
+
+    setTimeout(() => {
+
+        removeTyping();
+
+        const reply = aiEngine(text);
+
+        addMessage(reply, "ai");
+
+    }, 1000);
+
+}
+
+function addMessage(text, sender) {
+
+    const wrapper = document.createElement("div");
+
+    wrapper.className = "message";
+
+    const bubble = document.createElement("div");
+
+    bubble.className = "bubble";
+
+    if (sender === "user") {
+
+        bubble.innerHTML = `
+            <b>👤 Anda</b><br><br>
+            ${text}
+        `;
+
+        bubble.style.background = "#2563eb";
+
+    } else {
+
+        bubble.innerHTML = `
+            <b>🤖 Feris</b><br><br>
+            ${text}
+        `;
 
     }
 
-});
+    wrapper.appendChild(bubble);
 
-function sendMessage(){
+    chat.appendChild(wrapper);
 
-    const text=input.value.trim();
-
-    if(text==="") return;
-
-    addUserMessage(text);
-
-    input.value="";
-
-    setTimeout(function(){
-
-        addAIMessage();
-
-    },700);
+    chat.scrollTop = chat.scrollHeight;
 
 }
 
-function addUserMessage(text){
+function showTyping() {
 
-    const div=document.createElement("div");
+    const typing = document.createElement("div");
 
-    div.className="message";
+    typing.id = "typing";
 
-    div.innerHTML=`
+    typing.className = "message";
 
-    <div class="bubble">
-
-    ${text}
-
-    </div>
-
+    typing.innerHTML = `
+        <div class="bubble">
+            🤖 <b>Feris</b><br><br>
+            Sedang mengetik...
+        </div>
     `;
 
-    chat.appendChild(div);
+    chat.appendChild(typing);
 
-    chat.scrollTop=chat.scrollHeight;
+    chat.scrollTop = chat.scrollHeight;
 
 }
 
-function addAIMessage(){
+function removeTyping() {
 
-    const div=document.createElement("div");
+    const typing = document.getElementById("typing");
 
-    div.className="message ai";
+    if (typing) typing.remove();
 
-    div.innerHTML=`
+}
 
-    <div class="bubble">
+function aiEngine(message) {
 
-    Terima kasih Prof.
+    const text = message.toLowerCase();
 
-    Saya menerima perintah Anda.
+    if (text.includes("halo")) {
 
-    Saat ini saya masih menggunakan mode
+        return "Halo Prof Feri 👋<br><br>Saya siap membantu pekerjaan Anda hari ini.";
 
-    <b>FS DIGITAL AGENT v0.1</b>.
+    }
 
-    Pada versi berikutnya saya akan mulai menggunakan
+    if (text.includes("siapa")) {
 
-    Gemini AI sebagai otak utama.
+        return "Saya adalah <b>Feris</b>, FS DIGITAL AGENT versi 0.1.";
 
-    </div>
+    }
 
+    if (text.includes("simpati")) {
+
+        return "SIMPATI-WANI adalah proyek utama yang sedang kita kembangkan bersama.";
+
+    }
+
+    if (text.includes("pekerja sosial")) {
+
+        return "Saya siap membantu seluruh pekerjaan sosial Prof mulai dari laporan, asesmen hingga pengembangan aplikasi.";
+
+    }
+
+    if (text.includes("terima kasih")) {
+
+        return "Sama-sama Prof 😊";
+
+    }
+
+    return `
+        Perintah diterima.<br><br>
+        Saat ini saya masih menggunakan AI lokal.<br><br>
+        Gemini AI akan diaktifkan pada Sprint berikutnya.
     `;
-
-    chat.appendChild(div);
-
-    chat.scrollTop=chat.scrollHeight;
 
 }
