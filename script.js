@@ -252,18 +252,21 @@ async function sendMessage() {
 
 function addMessage(text, sender) {
 
-    const div =
-        document.createElement("div");
+    const message = document.createElement("div");
 
-    div.className =
-        "message " + sender;
+    message.className = "message " + sender;
 
-    div.innerHTML = text;
+    const bubble = document.createElement("div");
 
-    chat.appendChild(div);
+    bubble.className = "bubble";
 
-    chat.scrollTop =
-        chat.scrollHeight;
+    bubble.innerHTML = text;
+
+    message.appendChild(bubble);
+
+    chat.appendChild(message);
+
+    chat.scrollTop = chat.scrollHeight;
 
 }
 
@@ -273,21 +276,23 @@ function addMessage(text, sender) {
 
 function showTyping() {
 
-    const div =
-        document.createElement("div");
+    const message = document.createElement("div");
 
-    div.id = "typing";
+    message.id = "typing";
 
-    div.className =
-        "message ai";
+    message.className = "message ai";
 
-    div.innerHTML =
-        "Sedang mengetik...";
+    const bubble = document.createElement("div");
 
-    chat.appendChild(div);
+    bubble.className = "bubble";
 
-    chat.scrollTop =
-        chat.scrollHeight;
+    bubble.innerHTML = "Sedang mengetik...";
+
+    message.appendChild(bubble);
+
+    chat.appendChild(message);
+
+    chat.scrollTop = chat.scrollHeight;
 
 }
 
