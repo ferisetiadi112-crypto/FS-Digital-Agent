@@ -1,12 +1,12 @@
 // ===========================================
 // FS DIGITAL AGENT
-// Sprint 3.1 - Gemini Connected
+// Sprint 4.0
+// Cloudflare Worker + OpenRouter
 // ===========================================
 
-const GEMINI_API_KEY = "AQ.GANTI_DENGAN_API_KEY_ANDA";
-
-const GEMINI_URL =
-`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+// URL Cloudflare Worker
+const API_URL =
+"https://hidden-snowflake-624c.ferisetiadi112.workers.dev";
 
 const input = document.getElementById("userInput");
 const button = document.getElementById("sendBtn");
@@ -14,38 +14,39 @@ const chat = document.getElementById("chatArea");
 
 button.addEventListener("click", sendMessage);
 
-input.addEventListener("keydown", function(e){
-    if(e.key==="Enter"){
+input.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {
         sendMessage();
     }
 });
 
-async function sendMessage(){
+async function sendMessage() {
 
-    const text=input.value.trim();
+    const text = input.value.trim();
 
-    if(text==="") return;
+    if (text === "") return;
 
-    addMessage(text,"user");
+    addMessage(text, "user");
 
-    input.value="";
+    input.value = "";
 
     showTyping();
 
-    try{
+    try {
 
-        const reply=await askGemini(text);
+        const reply = await askAI(text);
 
         removeTyping();
 
-        addMessage(reply,"ai");
+        addMessage(reply, "ai");
 
-    }catch(err){
+    } catch (err) {
 
         removeTyping();
 
         addMessage(
-            "❌ Tidak dapat terhubung ke Gemini API.<br><br>"+err.message,
+            "❌ Tidak dapat terhubung ke AI.<br><br>" +
+            err.message,
             "ai"
         );
 
@@ -53,84 +54,72 @@ async function sendMessage(){
 
 }
 
-function addMessage(text,sender){
+function addMessage(text, sender) {
 
-    const div=document.createElement("div");
+    const div = document.createElement("div");
 
-    div.className="message "+sender;
+    div.className = "message " + sender;
 
-    div.innerHTML=text;
-
-    chat.appendChild(div);
-
-    chat.scrollTop=chat.scrollHeight;
-
-}
-
-function showTyping(){
-
-    const div=document.createElement("div");
-
-    div.id="typing";
-
-    div.className="message ai";
-
-    div.innerHTML="Sedang mengetik...";
+    div.innerHTML = text;
 
     chat.appendChild(div);
 
-    chat.scrollTop=chat.scrollHeight;
+    chat.scrollTop = chat.scrollHeight;
 
 }
 
-function removeTyping(){
+function showTyping() {
 
-    const typing=document.getElementById("typing");
+    const div = document.createElement("div");
 
-    if(typing) typing.remove();
+    div.id = "typing";
+
+    div.className = "message ai";
+
+    div.innerHTML = "Sedang mengetik...";
+
+    chat.appendChild(div);
+
+    chat.scrollTop = chat.scrollHeight;
 
 }
 
-async function askGemini(prompt){
+function removeTyping() {
 
-    const response=await fetch(GEMINI_URL,{
+    const typing = document.getElementById("typing");
 
-        method:"POST",
+    if (typing) typing.remove();
 
-        headers:{
-            "Content-Type":"application/json"
+}
+
+async function askAI(prompt) {
+
+    const response = await fetch(API_URL, {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
         },
 
-        body:JSON.stringify({
-
-            contents:[
-
-                {
-
-                    parts:[
-
-                        {
-                            text:prompt
-                        }
-
-                    ]
-
-                }
-
-            ]
-
+        body: JSON.stringify({
+            message: prompt
         })
 
     });
 
-    if(!response.ok){
+    const data = await response.json();
 
-        throw new Error("HTTP "+response.status);
+    if (!response.ok) {
+
+        throw new Error(
+            data?.response?.error?.message ||
+            data?.error ||
+            ("HTTP " + response.status)
+        );
 
     }
 
-    const data=await response.json();
-
-    return data.candidates[0].content.parts[0].text;
+    return data.reply;
 
 }
