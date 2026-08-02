@@ -21,7 +21,9 @@
 
 <div class="app">
 
-    <!-- HEADER -->
+    <!-- ===========================
+         HEADER
+    ============================ -->
 
     <header class="topbar">
 
@@ -33,27 +35,19 @@
 
     </header>
 
-    <!-- CHAT -->
+    <!-- ===========================
+         CHAT AREA
+         Seluruh pesan dibuat
+         melalui JavaScript
+    ============================ -->
 
     <main id="chatArea">
 
-        <div class="message ai">
-
-            <div class="bubble">
-
-                Halo Prof Feri 👋
-
-                <br><br>
-
-                Apa yang ingin kita kerjakan hari ini?
-
-            </div>
-
-        </div>
-
     </main>
 
-    <!-- INPUT -->
+    <!-- ===========================
+         INPUT
+    ============================ -->
 
     <footer class="chatbox">
 
@@ -62,9 +56,12 @@
             type="text"
             placeholder="Ketik pesan..."
             autocomplete="off"
+            spellcheck="false"
         >
 
-        <button id="sendBtn">
+        <button
+            id="sendBtn"
+            type="button">
 
             ↑
 
@@ -73,6 +70,10 @@
     </footer>
 
 </div>
+
+<!-- ===========================
+     SCRIPT
+=========================== -->
 
 <script src="script.js"></script>
 
